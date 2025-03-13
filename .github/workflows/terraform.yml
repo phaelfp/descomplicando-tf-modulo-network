@@ -21,6 +21,9 @@ jobs:
         with:
           terraform_version: latest
 
+      - name: Inicializar Terraform
+        run: terraform init
+
       - name: Verificar Formatação
         run: terraform fmt -check -recursive
 
@@ -28,14 +31,22 @@ jobs:
         run: terraform validate
 
   terraform-docs:
-    needs: check-format-syntax
     name: Gerar Documentação (terraform-docs)
     runs-on: ubuntu-latest
+    needs: check-format-syntax  # Garante que este job depende do sucesso do job 'check-format-syntax'
     if: github.event_name == 'push'
 
     steps:
       - name: Checkout do Código
         uses: actions/checkout@v4
+
+      - name: Configurar o Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Inicializar Terraform
+        run: terraform init
 
       - name: Instalar terraform-docs
         run: |
