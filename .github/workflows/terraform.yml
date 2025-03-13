@@ -1,0 +1,48 @@
+name: Terraform Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
+jobs:
+  check-format-syntax:
+    name: Verificar Formatação e Sintaxe
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Configurar o Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Verificar Formatação
+        run: terraform fmt -check -recursive
+
+      - name: Verificar Sintaxe
+        run: terraform validate
+
+  terraform-docs:
+    needs: check-format-syntax
+    name: Gerar Documentação (terraform-docs)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Instalar terraform-docs
+        run: |
+          curl -sSLo terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/latest/download/terraform-docs-linux-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          sudo mv terraform-docs /usr/local/bin/
+
+      - name: Gerar Documentação
+        run: terraform-docs markdown table --output-file README.md --output-mode inject .
