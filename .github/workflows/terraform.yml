@@ -1,5 +1,5 @@
 name: Terraform Pipeline
-
+run-name: ${{ github.actor }} iniciou o pipeline
 on:
   push:
     branches:
@@ -51,10 +51,14 @@ jobs:
       - name: Verificar Formatação
         run: terraform fmt -check -recursive
 
-      - name: Executar Terraform Docs
-        uses: terraform-docs/gh-actions@v1.0.0
+      - name: tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
         with:
-          working-dir: .
-          output-file: README.md
-          output-method: inject
-          git-push: "true"
+          github_token: ${{ github.token }}
+
+      - name: Rodar Terraform Docs via Docker
+        run: |
+          docker run --rm \
+            --volume "$(pwd):/workspace" \
+            quay.io/terraform-docs/terraform-docs:latest \
+            markdown table --output-file README.md --output-mode inject /workspace
