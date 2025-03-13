@@ -51,12 +51,10 @@ jobs:
       - name: Verificar Formatação
         run: terraform fmt -check -recursive
 
-      - name: Instalar terraform-docs
-        run: |
-          curl -sSLo terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/latest/download/terraform-docs-linux-amd64.tar.gz
-          tar -xzf terraform-docs.tar.gz
-          chmod +x terraform-docs
-          sudo mv terraform-docs /usr/local/bin/
-
-      - name: Gerar Documentação
-        run: terraform-docs markdown table --output-file README.md --output-mode inject .
+      - name: Executar Terraform Docs
+        uses: terraform-docs/gh-actions@v1.0.0
+        with:
+          working-dir: .
+          output-file: README.md
+          output-method: inject
+          git-push: "true"
