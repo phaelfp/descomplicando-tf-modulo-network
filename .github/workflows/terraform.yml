@@ -39,6 +39,8 @@ jobs:
     steps:
       - name: Checkout do Código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Necessário para evitar erros ao fazer push
 
       - name: Configurar o Terraform
         uses: hashicorp/setup-terraform@v3
@@ -62,3 +64,20 @@ jobs:
             --volume "$(pwd):/workspace" \
             quay.io/terraform-docs/terraform-docs:latest \
             markdown table --output-file README.md --output-mode inject /workspace
+
+      - name: Verificar se há mudanças
+        run: |
+          if [[ -n "$(git status --porcelain README.md)" ]]; then
+            echo "CHANGES_DETECTED=true" >> $GITHUB_ENV
+          else
+            echo "CHANGES_DETECTED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Commit e Push do README.md atualizado
+        if: env.CHANGES_DETECTED == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Atualiza documentação Terraform via GitHub Actions"
+          git push
