@@ -1,5 +1,5 @@
 module "networks" {
-  source   = "../"
+  source     = "../"
   aws_region = var.aws_region
   vpcs       = var.vpcs
   subnets    = var.subnets

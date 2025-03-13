@@ -16,7 +16,7 @@ variable "vpcs" {
 variable "subnets" {
   description = "Lista de sub-redes a serem criadas, associadas a uma VPC pelo nome"
   type = list(object({
-    vpc_name   = string   # Nome da VPC onde a sub-rede será criada
+    vpc_name   = string # Nome da VPC onde a sub-rede será criada
     cidr_block = string
     az         = string
     is_public  = bool

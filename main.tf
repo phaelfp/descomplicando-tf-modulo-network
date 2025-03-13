@@ -12,7 +12,7 @@ resource "aws_vpc" "this" {
 # Obtendo VPCs existentes pelo nome (caso não sejam criadas pelo Terraform)
 data "aws_vpc" "existing" {
   for_each = {
-    for subnet in var.subnets : 
+    for subnet in var.subnets :
     subnet.vpc_name => subnet if !contains([for v in var.vpcs : v.name], subnet.vpc_name)
   }
 
