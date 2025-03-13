@@ -9,7 +9,7 @@ on:
 
 jobs:
   check-format-syntax:
-    name: Verificar Formatação e Sintaxe
+    name: Verificar a Sintaxe e Formatar
     runs-on: ubuntu-latest
 
     steps:
@@ -24,8 +24,8 @@ jobs:
       - name: Inicializar Terraform
         run: terraform init
 
-      - name: Verificar Formatação
-        run: terraform fmt -check -recursive
+      - name: Formatar
+        run: terraform fmt -recursive
 
       - name: Verificar Sintaxe
         run: terraform validate
@@ -47,6 +47,9 @@ jobs:
 
       - name: Inicializar Terraform
         run: terraform init
+
+      - name: Verificar Formatação
+        run: terraform fmt -check -recursive
 
       - name: Instalar terraform-docs
         run: |
