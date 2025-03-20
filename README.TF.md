@@ -27,7 +27,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | Região da AWS | `string` | `"us-east-1"` | no |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | Lista de sub-redes a serem criadas, associadas a uma VPC pelo nome | <pre>list(object({<br/>    vpc_name   = string # Nome da VPC onde a sub-rede será criada<br/>    cidr_block = string<br/>    az         = string<br/>    is_public  = bool<br/>  }))</pre> | `[]` | no |
 | <a name="input_vpcs"></a> [vpcs](#input\_vpcs) | Lista de VPCs a serem criadas | <pre>list(object({<br/>    name       = string<br/>    cidr_block = string<br/>  }))</pre> | `[]` | no |
 
