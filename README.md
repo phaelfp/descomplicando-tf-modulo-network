@@ -23,14 +23,6 @@ Precisamos da seguinte estrutura de arquivos.
 
 ```tf
 terraform {
-  backend "s3" {
-    bucket         = "meu-terraform-backend"
-    key            = "terraform-network-example/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform-network-example-lock"
-    encrypt        = true
-  }
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -44,8 +36,6 @@ provider "aws" {
 }
 
 ```
-
-Não se esqueça que o bucket s3 e o dynamodb tem que existir para funcionar.
 
 ### variavles.tf
 
@@ -197,4 +187,3 @@ subnet_ids = {
 }
 
 ```
-
