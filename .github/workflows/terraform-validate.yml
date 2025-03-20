@@ -1,0 +1,32 @@
+name: Terraform Validate Pipeline
+run-name: "🚀 Executado por ${{ github.actor }} - Mensagem: ${{ github.event.head_commit.message || github.event.pull_request.title }}"
+on:
+  pull_request:
+
+jobs:
+  check-format-syntax:
+    name: Verificar a Sintaxe, Formatação e Segurança
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Configurar o Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Inicializar Terraform
+        run: terraform init
+
+      - name: Formatar
+        run: terraform fmt -check -recursive
+
+      - name: Verificar Sintaxe
+        run: terraform validate
+
+      - name: tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
+        with:
+          github_token: ${{ github.token }}
