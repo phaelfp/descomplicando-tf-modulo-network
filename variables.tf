@@ -1,9 +1,3 @@
-variable "aws_region" {
-  description = "Região da AWS"
-  type        = string
-  default     = "us-east-1"
-}
-
 variable "vpcs" {
   description = "Lista de VPCs a serem criadas"
   type = list(object({
